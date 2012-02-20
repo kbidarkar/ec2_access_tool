@@ -13,9 +13,10 @@ import argparse
 import sys
 import amazon_ec2_lib
 
-usage = "amazon_ec2.py [-h] [-l | -r REG ( -c | -t | -d | -img | -ins | -f IPADDR | -di INSID |\n\
--li [-ami AMIID] [-min MIN] [-max MAX] [-key KNAM] [-zone ZONE] [-type TYPE] [-sg SGRP] ) ]"
-parser = argparse.ArgumentParser(description='Amazon EC2 Cloud Tool', usage=usage)
+usage = "amazon_ec2.py [-h] -l\
+\n\t\t\t  -r REG (-c | -t | -d | -img | -ins | -f IPADDR | -di INSID)\n\
+\t\t\t\t  -li [-ami AMIID*] [-min MIN] [-max MAX] [-key KNAM*] [-zone ZONE*] [-type TYPE] [-sg SGRP]"
+parser = argparse.ArgumentParser(description='Amazon EC2 Cloud Tool ', usage=usage)
 group = parser.add_mutually_exclusive_group(required=True)
 group1 = parser.add_mutually_exclusive_group(required=False)
 
@@ -28,12 +29,14 @@ group1.add_argument('-img','--list-allimages', action='store_const', const=True,
 group1.add_argument('-ins','--list-allinstances', action='store_const', const=True, default=False, help='lists only the running instances in a specified region')
 group1.add_argument('-f','--find-instanceid', action='store', metavar='IPADDR', help='find the InstanceId using the private_ipaddress in a specified region')
 group1.add_argument('-di','--display-instanceinfo', action='store', metavar='INSID', help='displays an instance info using the instanceId in a specified region')
-group1.add_argument('-li','--launch-instances', action='store_const', const=True, default=False, help='launch an instance in a specified region')
-parser.add_argument('-ami','--ami-id', action='store', metavar='AMIID', help='The ami-id to be used to launch the instances')
+group1.add_argument('-li','--launch-instances', action='store_const', const=True, default=False, 
+help='launch an instance in a specified region, Requires -ami and -type for launching')
+parser.add_argument('-ami','--ami-id', action='store', metavar='AMIID',
+help='The ami-id to be used to launch the instances, * signifies mandatory')
 parser.add_argument('-min','--min-instances', action='store', metavar='MIN', default='1', help='the minimum number of instances to be launched, By default: -min 1')
 parser.add_argument('-max','--max-instances', action='store', metavar='MAX', default='1', help='the maximum number of instances to be launched, By default: -max 1')
-parser.add_argument('-key','--key-name', action='store', metavar='KNAM', help='the key name for the specified region')
-parser.add_argument('-zone','--placement-zone', action='store', metavar='ZONE', help='the zone in which the instance is to be launched')
+parser.add_argument('-key','--key-name', action='store', metavar='KNAM',
+help='the key name for the specified region, * signifies mandatory')
 parser.add_argument('-type','--instance-type', action='store', metavar='TYPE', default='m1.large', help='the hardware profile of the instance, By default: -type m1.large')
 parser.add_argument('-sg','--security-group', action='store', metavar='SGRP', default='default',help='the security group in which the instance is to be placed, By default: -sg default')
 args = parser.parse_args()
@@ -63,7 +66,7 @@ AMIID = args.ami_id
 MIN = args.min_instances
 MAX = args.max_instances
 KNAM = args.key_name
-ZONE = args.placement_zone
+ZONE = REG+'b'
 TYPE = args.instance_type
 SGRP = args.security_group
 
