@@ -1,2 +1,21 @@
 AUTHORS: kbidarka@redhat.com
 
+a) configure the /etc/boto.cfg file as below
+Please refer the accounts page (http://aws.amazon.com/account/ under security credentials)
+of amazon site for your access details (Access Keys :- access_key_id and secret_access_key).
+#[Credentials]
+#aws_access_key_id = xxxx
+#aws_secret_access_key = xxxx
+
+b)Run ./install_configure_prerequisites.py to install boto, paramiko and argparse modules
+
+c) ./amazon_ec2.py -h  to list down all the options
+
+
+TODO
+
+a) Exclude a region or regions while choosing the region as **all** for -r REGION
+b) Add an option for SECURITY, so that one could clone current security-group
+to another region
+c) Delete a single EBS volume.
+d) many more
